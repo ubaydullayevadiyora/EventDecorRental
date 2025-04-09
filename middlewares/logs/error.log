@@ -1,0 +1,14 @@
+[2025-04-08 10:49:48] ERROR: GET /api/filter/clients/cancelled?start=2024-01-01&end=2024-12-31%0A - Contract is not defined
+[2025-04-08 10:50:04] ERROR: GET /api/filter/owners/top?category_id=1%0A - Product is not defined
+[2025-04-08 10:50:15] ERROR: GET /api/filter/clients/payments/1%0A - ContractItem is not defined
+[2025-04-09 07:53:27] ERROR: POST /api/admins - Expected double-quoted property name in JSON at position 116 (line 6 column 1)
+[2025-04-09 07:57:14] ERROR: POST /api/clients - Expected double-quoted property name in JSON at position 157 (line 7 column 1)
+[2025-04-09 08:43:38] ERROR: GET /api/filter/clients/cancelled?start=2025-01-01&end=2025-05-15%0A - Contract is not defined
+[2025-04-09 08:43:55] ERROR: GET /api/filter/owners/top?category_id=1%0A - Product is not defined
+[2025-04-09 08:44:41] ERROR: GET /api/filter/clients/payments/1%0A - ContractItem is not defined
+[2025-04-09 08:57:43] ERROR: GET /api/filter/clients/payments/1%0A - ContractItem is not defined
+[2025-04-09 08:58:28] ERROR: GET /api/filter/clients/payments/1%0A - Product is not defined
+[2025-04-09 09:16:50] ERROR: GET /api/filter/clients/payments/1%0A - contract_items is not associated to contracts!
+[2025-04-09 09:34:41] ERROR: POST /api/contracts - Expected ',' or '}' after property value in JSON at position 157 (line 7 column 5)
+[2025-04-09 09:38:23] ERROR: GET /api/filter/owners/top?category_id=1%0A - Product is not defined
+[2025-04-09 09:48:16] ERROR: GET /api/filter/clients/cancelled?start=2025-01-01&end=2025-05-15%0A - Contract is not defined
