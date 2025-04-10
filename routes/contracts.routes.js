@@ -1,13 +1,13 @@
 const { getAllContracts, getContractById, updateContract, deleteContract, addNewContract } = require("../controllers/contracts.controller")
+const clientsAuth = require("../middlewares/auth/clients.auth")
+const clientGuard = require("../middlewares/guards/client.guard")
 
-const ownerAuth = require("../middlewares/auth/owner.auth")
-const ownerGuard = require("../middlewares/guards/owner.guard")
 const router = require("express").Router()
 
-router.post("/", ownerAuth, ownerGuard, addNewContract)
-router.get("/contracts", ownerAuth, ownerGuard,  getAllContracts)
-router.get("/:id", ownerAuth, ownerGuard,  getContractById)
-router.put("/update/:id", ownerAuth, ownerGuard, updateContract)
-router.delete("/delete/:id", ownerAuth, ownerGuard, deleteContract)
+router.post("/", clientsAuth, clientGuard, addNewContract)
+router.get("/contracts", clientsAuth, clientGuard, getAllContracts)
+router.get("/:id", clientsAuth, clientGuard, getContractById)
+router.put("/update/:id", clientsAuth, clientGuard, updateContract)
+router.delete("/delete/:id", clientsAuth, clientGuard, deleteContract)
 
 module.exports = router

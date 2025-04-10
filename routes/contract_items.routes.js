@@ -7,8 +7,8 @@ const ownerGuard = require("../middlewares/guards/owner.guard")
 const router = require("express").Router()
 
 router.post("/add", clientsAuth, clientGuard, addNewContractItems)
-router.get("/contract_items", ownerAuth, ownerGuard, getAllContractItems)
-router.get("/:id", ownerAuth, ownerGuard, getContractItemsById)
+router.get("/contract_items", clientsAuth, clientGuard, getAllContractItems)
+router.get("/:id", clientsAuth, clientGuard, getContractItemsById)
 router.put("/update/:id", ownerAuth, ownerGuard, updateContractItems)
 router.delete("/delete/:id", ownerAuth, ownerGuard, deleteContractItems)
 

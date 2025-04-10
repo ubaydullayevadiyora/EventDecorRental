@@ -12,3 +12,4 @@
 [2025-04-09 09:34:41] ERROR: POST /api/contracts - Expected ',' or '}' after property value in JSON at position 157 (line 7 column 5)
 [2025-04-09 09:38:23] ERROR: GET /api/filter/owners/top?category_id=1%0A - Product is not defined
 [2025-04-09 09:48:16] ERROR: GET /api/filter/clients/cancelled?start=2025-01-01&end=2025-05-15%0A - Contract is not defined
+[2025-04-10 08:08:37] ERROR: GET /api/filter/clients/payments/1 - WHERE parameter "client_id" has invalid "undefined" value

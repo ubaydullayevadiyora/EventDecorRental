@@ -5,8 +5,9 @@ const bcrypt = require("bcrypt");
 const config = require('config');
 const { sendOtpMail } = require("../services/mail.service");
 const mailServise = require("../services/mail.service");
+const Clients = require("../models/clients.model");
 
-const REFRESH_TOKEN_SECRET = config.get("jwt.admin.refresh_key");
+const REFRESH_TOKEN_SECRET = config.get("jwt.owner.refresh_key");
 
 const addNewOwner = async (req, res) => {
     try {
@@ -91,6 +92,13 @@ const loginOwner = async (req, res) => {
 
         await owner.update({ refresh_token: tokens.refreshToken });
 
+        res.cookie("refreshToken", tokens.refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
         res.status(200).json({
             message: "Login successful",
             accessToken: tokens.accessToken,
@@ -157,10 +165,10 @@ const sendOtp = async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000);
         await Owners.update({ otp }, { where: { id: owner.id } });
 
-        const subject = "Your OTP Code";
-        const text = `Your OTP code is: ${otp}. It will expire in 5 minutes.`;
+        // const subject = "Your OTP Code";
+        // const text = `Your OTP code is: ${otp}. It will expire in 5 minutes.`;
 
-        await mailServise.sendOtpMail(email, subject, text);
+        await mailServise.sendOtpMail(email, otp);
 
         res.status(200).json({ message: "OTP sent to email!" });
         console.log(email)
@@ -175,7 +183,7 @@ const verifyOtp = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
-        const owner = await Clients.findOne({ where: { email } });
+        const owner = await Owners.findOne({ where: { email } });
         if (!owner) return res.status(404).json({ message: "Client not found" });
 
         if (owner.otp === String(otp)) {

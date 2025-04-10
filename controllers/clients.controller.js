@@ -6,7 +6,7 @@ const config = require('config');
 const { sendOtpMail } = require("../services/mail.service");
 const mailService = require("../services/mail.service");
 
-const REFRESH_TOKEN_SECRET = config.get("jwt.admin.refresh_key");
+const REFRESH_TOKEN_SECRET = config.get("jwt.client.refresh_key");
 
 const addNewClient = async (req, res) => {
     try {
@@ -92,6 +92,13 @@ const loginClient = async (req, res) => {
         const tokens = jwtService.generateTokens({ id: client.id, email: client.email, role: "client" });
 
         await client.update({ refresh_token: tokens.refreshToken });
+
+        res.cookie("refreshToken", tokens.refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         res.status(200).json({
             message: "Login successful",

@@ -19,8 +19,8 @@ const getProductsRentedInPeriod = async (req, res) => {
             end_date: { [Op.lte]: end }
         },
         include: [{
-            model: ContractItem,
-            include: [Product]
+            model: ContractItems,
+            include: [Products]
         }]
     });
 
@@ -31,13 +31,15 @@ const getProductsRentedInPeriod = async (req, res) => {
 const getDamagingClients = async (req, res) => {
     const { start, end } = req.query;
 
+    const damagedStatus = await Status.findOne({ where: { name: 'damaged' } });
+
     try {
     
         const contracts = await Contracts.findAll({
             where: {
                 start_date: { [Op.gte]: start },
                 end_date: { [Op.lte]: end },
-                status_id: 3 
+                status_id: damagedStatus.id
             },
             include: [
                 {
@@ -47,11 +49,7 @@ const getDamagingClients = async (req, res) => {
             ]
         });
 
-        const uniqueClients = [
-            ...new Map(contracts.map(c => [c.client.id, c.client])).values()
-        ];
-
-        res.json(uniqueClients);
+        res.json(contracts);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -72,12 +70,12 @@ const getCancelledClients = async (req, res) => {
         include: [Clients]
     });
 
-    const uniqueClients = [...new Map(contracts.map(c => [c.client.id, c.client])).values()];
-    res.json(uniqueClients);
+    res.json(contracts);
 };
 
 //___ eng kop ijaraga bergan Ownerlar
 const getTopOwnersByCategory = async (req, res) => {
+
     const category_id = req.query.category_id?.trim();
 
     try {
@@ -85,10 +83,13 @@ const getTopOwnersByCategory = async (req, res) => {
             include: [{
                 model: Products,
                 where: { category_id },
-                include: [Owner]
+                include: [{
+                    model: Owner,
+                    as: 'owner'
+                }]
             }],
             attributes: [
-                [sequelize.col('product.owner.id'), 'ownerId'],
+                [sequelize.col('product.owner.id'), 'owner_id'],
                 [sequelize.fn('COUNT', sequelize.col('contract_items.id')), 'rentalCount']
             ],
             group: ['product.owner.id', 'product.id', 'product.owner.id'],
@@ -116,7 +117,7 @@ const getClientPayments = async (req, res) => {
                 model: ContractItems,
                 include: [{
                     model: Products,
-                    include: [Category, Owner]
+                    include: [Category, { model: Owner, as: 'owner' }]
                 }]
             },
             Payments

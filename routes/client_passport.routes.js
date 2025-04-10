@@ -4,7 +4,7 @@ const clientGuard = require("../middlewares/guards/client.guard")
 
 const router = require("express").Router()
 
-router.post("/", clientsAuth, clientGuard,  addNewClientPassport)
+router.post("/", clientsAuth, clientGuard, addNewClientPassport)
 router.get("/payments", clientsAuth, clientGuard, getAllClientPassports)
 router.get("/:id", clientsAuth, clientGuard, getClientPassportById)
 router.put("/update/:id", clientsAuth, clientGuard, updateClientPassport)

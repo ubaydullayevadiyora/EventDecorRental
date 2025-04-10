@@ -12,7 +12,7 @@ Owner.hasMany(Contracts, { foreignKey: 'owner_id' });
 Contracts.belongsTo(Owner, { foreignKey: 'owner_id' });
 
 Owner.hasMany(Products, { foreignKey: 'owner_id' });
-Products.belongsTo(Owner, { foreignKey: 'owner_id' });
+Products.belongsTo(Owner, { foreignKey: 'owner_id', as:'owner' });
 
 Products.hasMany(ContractItems, { foreignKey: 'product_id' });
 ContractItems.belongsTo(Products, { foreignKey: 'product_id' });
